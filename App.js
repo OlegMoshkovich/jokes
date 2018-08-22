@@ -1,72 +1,98 @@
+import Expo from 'expo';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Button } from 'react-native';
-import axios from 'axios';
+import {
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { Card, Button } from 'react-native-elements';
+import Deck from './src/Deck';
 
-export default class App extends React.Component {
-  constructor(props) {
-  super(props);
-  this.state = {
-    joke: 'hahaha'
-  };
- this.getData= this.getData.bind(this);}
 
-  getData(){
-    fetch("https://webknox-jokes.p.mashape.com/jokes/random?maxLength=100", {
-      method: 'GET',
-      headers: {
-        "X-Mashape-Key": "89Z6T60dFsmshwQma1oUPieIEjZvp1AEp2rjsnkyRdhG1PNF0C",
-        "Accept": "application/json",
-      },
-    })
-    .then((response) => response.json())
-   .then((responseJson) => {
-     this.setState({joke:responseJson.joke})
-    // console.log(responseJson.joke);
-   })
-   .catch((error) => {
-     console.error(error);
-   });
+
+const DATA = [
+  { id: 1, text: 'Card #1', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' },
+  { id: 2, text: 'Card #2', uri: 'http://www.fluxdigital.co/wp-content/uploads/2015/04/Unsplash.jpg' },
+  { id: 3, text: 'Card #3', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
+  { id: 4, text: 'Card #4', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
+  { id: 5, text: 'Card #5', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' },
+  { id: 6, text: 'Card #6', uri: 'http://www.fluxdigital.co/wp-content/uploads/2015/04/Unsplash.jpg' },
+  { id: 7, text: 'Card #7', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
+  { id: 8, text: 'Card #8', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
+];
+
+
+
+
+class App extends React.Component {
+
+//   constructor(props) {
+//   super(props);
+//   this.state = {
+//     activated : true,
+//     joke: 'hahaha'
+//   };
+//  // this.getData= this.getData.bind(this);
+// }
+
+
+  // componentWillMount(){
+  //   fetch("https://webknox-jokes.p.mashape.com/jokes/search?keywords=new+york&minRating=5&numJokes=10", {
+  //     method: 'GET',
+  //     headers: {
+  //       "X-Mashape-Key": "89Z6T60dFsmshwQma1oUPieIEjZvp1AEp2rjsnkyRdhG1PNF0C",
+  //       "Accept": "application/json",
+  //     },
+  //   })
+  //   .then((response) => response.json())
+  //  .then((responseJson) => {
+  //
+  //     this.setState({joke:responseJson})
+  //    // console.log(responseJson);
+  //  })
+  //  .catch((error) => {
+  //    console.error(error);
+  //  });
+  // }
+  renderCard(item) {
+    return (
+      <Card
+        key={item.id}
+        title={item.text}
+        image={{ uri: item.uri }}
+      >
+        <Text style={{ marginBottom: 10 }}>
+          I can customize the Card further.
+        </Text>
+        <Button
+          icon={{ name: 'code' }}
+          backgroundColor="#03A9F4"
+          title="View Now!"
+        />
+      </Card>
+    );
   }
+
+
 
   render() {
     return (
       <View style={styles.container}>
-
-        <Text style={styles.joke}>{this.state.joke}</Text>
-        <TouchableOpacity style={styles.iconContainer} onPress={this.getData}>
-          <Image  style={styles.icon} source={require('./assets/images/smile.png')} />
-        </TouchableOpacity>
-
+        <Deck
+          data={DATA}
+          renderCard={this.renderCard}
+          renderNoMoreCards={this.renderNoMoreCards}
+        />
       </View>
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
+    marginTop: 20,
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingLeft:40,
-    paddingRight:40,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#fff'
   },
-  joke:{
-    // top:-80,
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingBottom: 20
-
-  },
-  iconContainer:{
-    // position:'absolute',
-    // bottom:300
-  },
-  icon:{
-    height: 100,
-    width: 100,
-  }
 });
+
+export default App
