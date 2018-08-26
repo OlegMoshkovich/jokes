@@ -58,27 +58,15 @@ export default class App extends React.Component {
             alignItems: 'center',
           }}
         >
-          <Text style={styles.jokeStyle}>
+          <Text style={[{flex:8},styles.jokeStyle]}>
             {item.text}
           </Text>
-          <View style = {{flex:1, top:90,alignSelf: 'center'}}>
+          <View style = {{flex:1, top:0,alignSelf: 'center'}}>
           <BottomIcon/>
           </View>
         </Card>
       );
     }
-
-    renderNoMoreCards() {
-        return (
-          <View style ={styles.container}>
-            <TouchableOpacity style = {{top :100}} >
-              <Image  style={styles.icon} source={require('./assets/images/smile.png')} />
-            </TouchableOpacity>
-          </View>
-          );
-        }
-
-
 
 
     render() {
@@ -118,6 +106,8 @@ export default class App extends React.Component {
           <Picker.Item label="Short" value="short" />
           <Picker.Item label="Long" value="long" />
           <Picker.Item label="Dark" value="dark" />
+          <Picker.Item label="Movie" value="movie" />
+
         </Picker>
         <View style = {styles.deckContainer}>
         <Deck
@@ -140,7 +130,7 @@ export default class App extends React.Component {
       backgroundColor: '#fff'
     },
     deckContainer:{
-      top:40
+      top:50
     },
     loadingIcon:{
       width:30,
@@ -161,8 +151,7 @@ export default class App extends React.Component {
     },
     jokeStyle:{
       margin:10,
-      flex:2,
-      top:20,
+      top:10,
       fontSize:20,
       fontFamily:'Helvetica',
       fontWeight:'bold',
