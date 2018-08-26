@@ -24,12 +24,11 @@ export default class App extends React.Component {
     this.state = {
       data: DATA,
       isLoading: true,
-      type: 'short'
+      type: 'long'
     };
     this.filtered;
 
   }
-
 
   componentDidMount(){
     fetch("https://sheetsu.com/apis/v1.0su/d0919c29956f", {
@@ -52,17 +51,17 @@ export default class App extends React.Component {
           key={item.id}
           containerStyle ={{
             width:300,
-            height:300,
+            height:450,
             borderRadius:10,
             flex:1,
             justifyContent:'center',
             alignItems: 'center',
           }}
         >
-          <Text style={{ marginBottom: 10, }}>
+          <Text style={styles.jokeStyle}>
             {item.text}
           </Text>
-          <View style = {{top:100, alignSelf: 'center'}}>
+          <View style = {{flex:1, top:90,alignSelf: 'center'}}>
           <BottomIcon/>
           </View>
         </Card>
@@ -114,11 +113,11 @@ export default class App extends React.Component {
             this.setState({type: itemValue});
             return
            }
-          }
+         }
           >
           <Picker.Item label="Short" value="short" />
           <Picker.Item label="Long" value="long" />
-          <Picker.Item label="Funny" value="funny" />
+          <Picker.Item label="Dark" value="dark" />
         </Picker>
         <View style = {styles.deckContainer}>
         <Deck
@@ -159,5 +158,14 @@ export default class App extends React.Component {
       position:'absolute',
 
 
+    },
+    jokeStyle:{
+      margin:10,
+      flex:2,
+      top:20,
+      fontSize:20,
+      fontFamily:'Helvetica',
+      fontWeight:'bold',
+      textAlign:'auto'
     }
   });
