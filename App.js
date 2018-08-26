@@ -96,6 +96,7 @@ export default class App extends React.Component {
         <View style={styles.container}>
         <Picker
           selectedValue={this.state.type}
+      
           style={{ height: 50, width: 100,alignSelf:'center', top:-120,right:20}}
           onValueChange={itemValue => {
             this.setState({type: itemValue});
