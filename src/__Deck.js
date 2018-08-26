@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import {
   View,
@@ -80,7 +79,7 @@ class Deck extends Component {
     const { position } = this.state;
     const rotate = position.x.interpolate({
       inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
-      outputRange: ['-0deg', '0deg', '0deg']
+      outputRange: ['-120deg', '0deg', '120deg']
     });
 
     return {

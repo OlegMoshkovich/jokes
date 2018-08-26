@@ -20,7 +20,6 @@ const DATA = [
 export default class App extends React.Component {
 
     constructor(props) {
-
     super(props);
     this.state = {
       data: DATA,
@@ -41,12 +40,9 @@ export default class App extends React.Component {
      // responseJson.map(item => DATA.push(item));
      responseJson.map((item) => {
        if(item.filter === this.state.type){
-         console.log('I am in the filter loop',item.filter)
          return DATA.push(item)
        }
-
     });
-     // responseJson.map(item => console.log('filter',item.filter,this.state.type));
      this.setState({isLoading: false});
    })
    .catch((error) => {
@@ -54,23 +50,7 @@ export default class App extends React.Component {
    });
   }
 
-    // componentDidUpdate(){
-    //   fetch("https://sheetsu.com/apis/v1.0su/d0919c29956f", {
-    //     method: 'GET',
-    //   })
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //    responseJson.map((item) => {
-    //      if(item.filter === this.state.type){
-    //        return DATA.push(item)
-    //      }
-    //   });
-    //    this.setState({isLoading: false});
-    //  })
-    //  .catch((error) => {
-    //    console.error(error);
-    //  });
-    // }
+
   renderCard(item) {
       return (
         <Card
@@ -107,12 +87,11 @@ export default class App extends React.Component {
     }
 
     render() {
+      console.log('Data' + this.state.data )
       const { isLoading } = this.state;
-
          if (isLoading) {
            return (
              <View style ={styles.container}>
-
                <TouchableOpacity style = {{top :100}} >
                  <Image  style={styles.loadingIcon} source={require('./assets/images/smile.png')} />
                </TouchableOpacity>
@@ -123,7 +102,6 @@ export default class App extends React.Component {
 
       return (
         <View style={styles.container}>
-
         <Picker
           selectedValue={this.state.type}
           style={{ height: 50, width: 100,alignSelf:'center', top:-120,right:20}}
@@ -131,17 +109,16 @@ export default class App extends React.Component {
             this.setState({type: itemValue})
             console.log('the value has changes')
             return
-          }
+           }
           }
           >
           <Picker.Item label="Short" value="short" />
           <Picker.Item label="Long" value="long" />
           <Picker.Item label="Funny" value="funny" />
-
         </Picker>
         <View style = {styles.deckContainer}>
         <Deck
-        data = {DATA}
+        data = {this.state.data}
         renderCard ={this.renderCard}
         />
         </View>
