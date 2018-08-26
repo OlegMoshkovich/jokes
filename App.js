@@ -152,9 +152,9 @@ export default class App extends React.Component {
     jokeStyle:{
       margin:10,
       top:10,
-      fontSize:20,
-      fontFamily:'Helvetica',
-      fontWeight:'bold',
+      fontSize:15,
+      fontFamily:'Verdana',
+
       textAlign:'auto'
     }
   });
