@@ -9,7 +9,10 @@ import {
   UIManager
 } from 'react-native';
 
+
+
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 const SWIPE_OUT_DURATION = 250;
 
@@ -54,9 +57,9 @@ class Deck extends Component {
   }
 
   forceSwipe(direction) {
-    const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
+    const x = direction === 'right' ? SCREEN_HEIGHT : -SCREEN_HEIGHT;
     Animated.timing(this.state.position, {
-      toValue: { x, y: 0 },
+      toValue: { x:x, y:0 },
       duration: SWIPE_OUT_DURATION
     }).start(() => this.onSwipeComplete(direction));
   }
@@ -91,7 +94,7 @@ class Deck extends Component {
 
   renderCards() {
     if (this.state.index >= this.props.data.length) {
-      return this.props.renderNoMoreCards();
+      return this.setState({index:0});
     }
 
     return this.props.data.map((item, i) => {
@@ -112,7 +115,7 @@ class Deck extends Component {
       return (
         <Animated.View
           key={item.id}
-          style={[styles.cardStyle, { top: 10 * (i - this.state.index), zIndex: 5 }]}
+          style={[styles.cardStyle, { top: 2 * (i - this.state.index), zIndex: 5 }]}
         >
           {this.props.renderCard(item)}
         </Animated.View>

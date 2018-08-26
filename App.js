@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import Deck from './src/Deck';
+import BottomIcon from './src/BottomIcon';
 
-const DATA = [
-
-];
+const DATA = [];
+const filteredData = [];
 
 export default class App extends React.Component {
 
@@ -26,7 +26,7 @@ export default class App extends React.Component {
       isLoading: true,
       type: 'short'
     };
-    this.fetch;
+    this.filtered;
 
   }
 
@@ -37,12 +37,7 @@ export default class App extends React.Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-     // responseJson.map(item => DATA.push(item));
-     responseJson.map((item) => {
-       if(item.filter === this.state.type){
-         return DATA.push(item)
-       }
-    });
+     responseJson.map(item => DATA.push(item));
      this.setState({isLoading: false});
    })
    .catch((error) => {
@@ -57,7 +52,7 @@ export default class App extends React.Component {
           key={item.id}
           containerStyle ={{
             width:300,
-            height:500,
+            height:300,
             borderRadius:10,
             flex:1,
             justifyContent:'center',
@@ -67,6 +62,9 @@ export default class App extends React.Component {
           <Text style={{ marginBottom: 10, }}>
             {item.text}
           </Text>
+          <View style = {{top:100, alignSelf: 'center'}}>
+          <BottomIcon/>
+          </View>
         </Card>
       );
     }
@@ -82,12 +80,19 @@ export default class App extends React.Component {
         }
 
 
-    fetch(){
-      console.log('in the fetch')
-    }
+
 
     render() {
-      console.log('Data' + this.state.data )
+
+      filteredData = [];
+
+      const filter =  DATA.map((item) => {
+           if(item.filter === this.state.type){
+             return filteredData.push(item)
+           }
+        })
+
+
       const { isLoading } = this.state;
          if (isLoading) {
            return (
@@ -106,8 +111,7 @@ export default class App extends React.Component {
           selectedValue={this.state.type}
           style={{ height: 50, width: 100,alignSelf:'center', top:-120,right:20}}
           onValueChange={itemValue => {
-            this.setState({type: itemValue})
-            console.log('the value has changes')
+            this.setState({type: itemValue});
             return
            }
           }
@@ -118,7 +122,7 @@ export default class App extends React.Component {
         </Picker>
         <View style = {styles.deckContainer}>
         <Deck
-        data = {this.state.data}
+        data = {filteredData}
         renderCard ={this.renderCard}
         />
         </View>
@@ -131,7 +135,7 @@ export default class App extends React.Component {
   const styles = StyleSheet.create({
     container: {
       left:20,
-      top:80,
+      top:120,
       marginTop: 20,
       flex: 1,
       backgroundColor: '#fff'
