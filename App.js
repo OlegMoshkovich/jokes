@@ -1,72 +1,182 @@
+console.disableYellowBox = true;
+
+import Expo from 'expo';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Button } from 'react-native';
-import axios from 'axios';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Picker
+} from 'react-native';
+import { Card, Button } from 'react-native-elements';
+import Deck from './src/Deck';
+
+const DATA = [
+
+];
 
 export default class App extends React.Component {
-  constructor(props) {
-  super(props);
-  this.state = {
-    joke: 'hahaha'
-  };
- this.getData= this.getData.bind(this);}
 
-  getData(){
-    fetch("https://webknox-jokes.p.mashape.com/jokes/random?maxLength=100", {
+    constructor(props) {
+
+    super(props);
+    this.state = {
+      data: DATA,
+      isLoading: true,
+      type: 'short'
+    };
+    this.fetch;
+
+  }
+
+
+  componentDidMount(){
+    fetch("https://sheetsu.com/apis/v1.0su/d0919c29956f", {
       method: 'GET',
-      headers: {
-        "X-Mashape-Key": "89Z6T60dFsmshwQma1oUPieIEjZvp1AEp2rjsnkyRdhG1PNF0C",
-        "Accept": "application/json",
-      },
     })
     .then((response) => response.json())
-   .then((responseJson) => {
-     this.setState({joke:responseJson.joke})
-    // console.log(responseJson.joke);
+    .then((responseJson) => {
+     // responseJson.map(item => DATA.push(item));
+     responseJson.map((item) => {
+       if(item.filter === this.state.type){
+         console.log('I am in the filter loop',item.filter)
+         return DATA.push(item)
+       }
+
+    });
+     // responseJson.map(item => console.log('filter',item.filter,this.state.type));
+     this.setState({isLoading: false});
    })
    .catch((error) => {
      console.error(error);
    });
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
+    // componentDidUpdate(){
+    //   fetch("https://sheetsu.com/apis/v1.0su/d0919c29956f", {
+    //     method: 'GET',
+    //   })
+    //   .then((response) => response.json())
+    //   .then((responseJson) => {
+    //    responseJson.map((item) => {
+    //      if(item.filter === this.state.type){
+    //        return DATA.push(item)
+    //      }
+    //   });
+    //    this.setState({isLoading: false});
+    //  })
+    //  .catch((error) => {
+    //    console.error(error);
+    //  });
+    // }
+  renderCard(item) {
+      return (
+        <Card
+          key={item.id}
+          containerStyle ={{
+            width:300,
+            height:500,
+            borderRadius:10,
+            flex:1,
+            justifyContent:'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ marginBottom: 10, }}>
+            {item.text}
+          </Text>
+        </Card>
+      );
+    }
 
-        <Text style={styles.joke}>{this.state.joke}</Text>
-        <TouchableOpacity style={styles.iconContainer} onPress={this.getData}>
-          <Image  style={styles.icon} source={require('./assets/images/smile.png')} />
-        </TouchableOpacity>
+    renderNoMoreCards() {
+        return (
+          <View style ={styles.container}>
+            <TouchableOpacity style = {{top :100}} >
+              <Image  style={styles.icon} source={require('./assets/images/smile.png')} />
+            </TouchableOpacity>
+          </View>
+          );
+        }
 
-      </View>
-    );
-  }
+
+    fetch(){
+      console.log('in the fetch')
+    }
+
+    render() {
+      const { isLoading } = this.state;
+
+         if (isLoading) {
+           return (
+             <View style ={styles.container}>
+
+               <TouchableOpacity style = {{top :100}} >
+                 <Image  style={styles.loadingIcon} source={require('./assets/images/smile.png')} />
+               </TouchableOpacity>
+             </View>
+           );
+         }
+
+
+      return (
+        <View style={styles.container}>
+
+        <Picker
+          selectedValue={this.state.type}
+          style={{ height: 50, width: 100,alignSelf:'center', top:-120,right:20}}
+          onValueChange={itemValue => {
+            this.setState({type: itemValue})
+            console.log('the value has changes')
+            return
+          }
+          }
+          >
+          <Picker.Item label="Short" value="short" />
+          <Picker.Item label="Long" value="long" />
+          <Picker.Item label="Funny" value="funny" />
+
+        </Picker>
+        <View style = {styles.deckContainer}>
+        <Deck
+        data = {DATA}
+        renderCard ={this.renderCard}
+        />
+        </View>
+        </View>
+      );
+    }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingLeft:40,
-    paddingRight:40,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  joke:{
-    // top:-80,
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingBottom: 20
 
-  },
-  iconContainer:{
-    // position:'absolute',
-    // bottom:300
-  },
-  icon:{
-    height: 100,
-    width: 100,
-  }
-});
+  const styles = StyleSheet.create({
+    container: {
+      left:20,
+      top:80,
+      marginTop: 20,
+      flex: 1,
+      backgroundColor: '#fff'
+    },
+    deckContainer:{
+      top:40
+    },
+    loadingIcon:{
+      width:30,
+      height:30,
+      alignSelf:'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 3, height: 0 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+    },
+    icon:{
+      width:20,
+      height:20,
+      alignSelf:'center',
+      position:'absolute',
+
+
+    }
+  });
